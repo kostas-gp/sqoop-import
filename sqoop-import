@@ -1,0 +1,14 @@
+sqoop import -Dmapreduce.map.memory.mb=4096 -Dmapreduce.map.java.opts=-Xmx3000m --connect 'jdbc:jtds:sqlserver://10.34.221.23:1433;USENTLMV2=true;domain=nbgit;databaseName=RFPayments' \
+--username E84603 --password $password \
+--query "select Id as I,\
+NetworkId as Networkl,\
+Type as Typ,\
+Name as Nam,\
+NetworkCustomerCode as NetworkCustomerCod,\
+VatNumber as VatNumbe,\
+Iban as Iba,\
+CreationDate as CreationDat,\
+UpdateDate as UpdateDat,\
+SAPCode as SAPCod,\
+ibUserid as ibUseri,\
+sydipelNum as sydipelNu FROM dbo.Issuer WHERE \$CONDITIONS" --map-column-java "I=String,Networkl=String,Nam=String,NetworkCustomerCod=String,VatNumbe=String,Iba=String,CreationDat=java.sql.Timestamp,UpdateDat=java.sql.Timestamp,SAPCod=String,ibUseri=String,sydipelNu=String" --target-dir /nbg_data/hive/warehouse/dev_training.db/issuer --delete-target-dir --as-textfile --mapreduce-job-name SqoopTest_IntranetAudit --fetch-size 5000 -m 1
